@@ -2,8 +2,7 @@ const { Telegraf, Markup } = require('telegraf');
 const { google } = require('googleapis');
 const fs = require('fs');
 
-console.log('FILE EXISTS:', fs.existsSync('credentials.json'));
-console.log('FILE CONTENT:', fs.readFileSync('credentials.json', 'utf8'));
+
 const bot = new Telegraf('8682232739:AAGv6nZpvEF0goz4tWBg-ZW-f7iMDC2KaTU');
 
 // один пользователь = один state
