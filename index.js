@@ -17,7 +17,7 @@ const getKeyboard = () =>
 
 // Google auth
 const auth = new google.auth.GoogleAuth({
-    keyFile: 'credentials.json',
+    keyFile: JSON.parse(process.env.GOOGLE_CREDENTIALS),
     scopes: ['https://www.googleapis.com/auth/spreadsheets'],
 });
 
