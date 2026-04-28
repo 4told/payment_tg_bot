@@ -3,7 +3,7 @@ const { google } = require('googleapis');
 const fs = require('fs');
 
 
-const bot = new Telegraf('8682232739:AAGv6nZpvEF0goz4tWBg-ZW-f7iMDC2KaTU');
+const bot = new Telegraf('8682232739:AAF2AGpRnbpITmk4t0gUdBLfoZUyl5dmVfY');
 
 // один пользователь = один state
 let state = null;
