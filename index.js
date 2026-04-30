@@ -34,7 +34,8 @@ bot.hears('➕ Добавить заявку', (ctx) => {
         step: 'name',
         name: '',
         amount: '',
-        method: ''
+        method: '',
+        house: ''
     };
 
     return ctx.reply(
@@ -86,14 +87,39 @@ bot.action(['work', 'material'], async (ctx) => {
         material: 'М',
     };
 
-    const method = methods[ctx.callbackQuery.data];
+    state.method = methods[ctx.callbackQuery.data];
+    state.step = 'house';
 
-    const name = state.name;
-    const amount = state.amount;
+    await ctx.answerCbQuery();
+
+    return ctx.reply(
+        'Выбери дом',
+        Markup.inlineKeyboard([
+            [Markup.button.callback('Дом 1', 'house_1')],
+            [Markup.button.callback('Дом 2', 'house_2')],
+            [Markup.button.callback('Дом 3', 'house_3')],
+            [Markup.button.callback('Пропустить', 'house_skip')],
+        ])
+    );
+});
+
+bot.action(['house_1', 'house_2', 'house_3', 'house_skip'], async (ctx) => {
+    if (!state || state.step !== 'house') return;
+
+    const houses = {
+        house_1: 'Дом 1',
+        house_2: 'Дом 2',
+        house_3: 'Дом 3',
+        house_skip: '',
+    };
+
+    state.house = houses[ctx.callbackQuery.data];
+
+    const { name, amount, method, house } = state;
 
     state = null;
 
-    await ctx.answerCbQuery(); // убираем "часики"
+    await ctx.answerCbQuery();
     await ctx.reply('⏳ Сохраняю...');
 
     const sheets = google.sheets({ version: 'v4', auth });
@@ -105,14 +131,16 @@ bot.action(['work', 'material'], async (ctx) => {
         requestBody: {
             values: [[
                 name,
-                new Date().toLocaleDateString('ru-RU'),
+                // new Date().toLocaleDateString('ru-RU'),
+                new Date().toISOString().slice(0, 10),
                 amount,
-                method
+                method,
+                house
             ]]
         }
     })
         .then(() => {
-            ctx.reply('✅ Сохранено', getKeyboard());
+            ctx.reply('✅ Сохранено в таблицу', getKeyboard());
         })
         .catch((e) => {
             console.error(e);
