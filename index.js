@@ -131,8 +131,7 @@ bot.action(['house_1', 'house_2', 'house_3', 'house_skip'], async (ctx) => {
         requestBody: {
             values: [[
                 name,
-                // new Date().toLocaleDateString('ru-RU'),
-                new Date().toISOString().slice(0, 10),
+                new Date().toLocaleDateString('ru-RU'),
                 amount,
                 method,
                 house
